@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7186bcc9-bd79-4a88-bc61-ed8575df87f9" name="Default Changelist" comment="SSM CRUD  springboot 等 ✅">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_classic_1_2_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_core_1_2_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__jakarta_annotation_jakarta_annotation_api_1_3_5.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_logging_log4j_log4j_api_2_13_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_logging_log4j_log4j_to_slf4j_2_13_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_30.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_30.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_2_3_1_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_autoconfigure_2_3_1_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_2_3_1_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_logging_2_3_1_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aop_5_2_7_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_5_2_7_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_5_2_7_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_5_2_7_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_expression_5_2_7_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jcl_5_2_7_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_yaml_snakeyaml_1_26.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/linsz-spring-boot-starter-autoconfigure.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lin/bean/MyProperties.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lin/config/MyAutoConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lin/service/MyService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/spring.factories" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/META-INF/spring.factories" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/lin/bean/MyProperties.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/lin/config/MyAutoConfiguration.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/lin/service/MyService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/linsz-spring-boot-starter-autoconfigure-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../linsz-spring-boot-starter/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springboot/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springboot/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springboot/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springboot/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springboot/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springboot/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springboot/src/main/java/com/lin/MainApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springboot/src/main/java/com/lin/config/MyConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springboot/src/main/java/com/lin/controller/ContentController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springboot/src/main/java/com/lin/controller/HelloController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springboot/src/main/java/com/lin/converter/MyConverter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springboot/src/main/java/com/lin/pojo/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springboot/src/main/resources/haha/t-ara.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springboot/src/test/java/com/lin/pojo/UserTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springmvc/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springmvc/springmvc.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/.idea/dataSources.local.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/.idea/dataSources/15750274-eb74-4c6f-a5e9-832f2ea646e8.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/.idea/dataSources/15750274-eb74-4c6f-a5e9-832f2ea646e8/storage_v2/_src_/schema/atguigudb.FHY3Vg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/.idea/dataSources/15750274-eb74-4c6f-a5e9-832f2ea646e8/storage_v2/_src_/schema/atguigudb.FHY3Vg.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/.idea/dataSources/15750274-eb74-4c6f-a5e9-832f2ea646e8/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/.idea/dataSources/15750274-eb74-4c6f-a5e9-832f2ea646e8/storage_v2/_src_/schema/mysql.osA4Bg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/.idea/dataSources/15750274-eb74-4c6f-a5e9-832f2ea646e8/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/.idea/dataSources/15750274-eb74-4c6f-a5e9-832f2ea646e8/storage_v2/_src_/schema/sys.zb4BAA.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/java/com/lin/ssm/controller/EmployeeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/java/com/lin/ssm/dao/EmployeeMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/java/com/lin/ssm/pojo/Departments.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/java/com/lin/ssm/pojo/Employees.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/java/com/lin/ssm/service/EmployeeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/resources/jdbc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/resources/logback.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/resources/mapper/EmployeeMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/resources/mybatis-config.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/resources/springmvc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/WEB-INF/views/index.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/WEB-INF/views/list.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/bootstrap-3.3.7-dist/css/bootstrap-theme.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/bootstrap-3.3.7-dist/css/bootstrap-theme.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/bootstrap-3.3.7-dist/css/bootstrap.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/bootstrap-3.3.7-dist/css/bootstrap.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/bootstrap-3.3.7-dist/css/bootstrap.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/bootstrap-3.3.7-dist/js/bootstrap.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/bootstrap-3.3.7-dist/js/bootstrap.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/bootstrap-3.3.7-dist/js/npm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/main/webapp/static/js/jquery-1.12.4.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/src/test/java/com/lin/ssm/dao/EmployeeMapperTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/ssm-crud.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/classes/applicationContext.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/classes/com/lin/ssm/dao/EmployeeMapper.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/classes/com/lin/ssm/pojo/Departments.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/classes/com/lin/ssm/pojo/Employees.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/classes/jdbc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/classes/mapper/EmployeeMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/classes/mybatis-config.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/classes/springmvc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/classes/applicationContext.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/classes/com/lin/ssm/controller/EmployeeController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/classes/com/lin/ssm/dao/EmployeeMapper.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/classes/com/lin/ssm/pojo/Departments.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/classes/com/lin/ssm/pojo/Employees.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/classes/com/lin/ssm/service/EmployeeService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/classes/jdbc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/classes/logback.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/classes/mapper/EmployeeMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/classes/mybatis-config.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/classes/springmvc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/aspectjweaver-1.9.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/c3p0-0.9.5.5.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/jsp-api-2.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/jsqlparser-4.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/jstl-api-1.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/logback-classic-1.2.3.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/logback-core-1.2.3.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/lombok-1.18.24.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/mchange-commons-java-0.2.19.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/mybatis-3.5.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/mybatis-spring-2.0.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/mysql-connector-java-5.1.16.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/pagehelper-5.3.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/servlet-api-2.5.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/slf4j-api-1.7.20.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/spring-aop-5.3.21.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/spring-aspects-5.3.20.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/spring-beans-5.3.21.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/spring-context-5.3.21.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/spring-core-5.3.21.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/spring-expression-5.3.21.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/spring-jcl-5.3.21.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/spring-jdbc-5.3.21.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/spring-tx-5.3.21.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/spring-web-5.3.21.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/lib/spring-webmvc-5.3.21.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/views/index.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/views/list.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/WEB-INF/web.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/bootstrap-3.3.7-dist/css/bootstrap-theme.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/bootstrap-3.3.7-dist/css/bootstrap-theme.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/bootstrap-3.3.7-dist/css/bootstrap.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/bootstrap-3.3.7-dist/css/bootstrap.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/bootstrap-3.3.7-dist/css/bootstrap.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/bootstrap-3.3.7-dist/js/bootstrap.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/bootstrap-3.3.7-dist/js/bootstrap.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/bootstrap-3.3.7-dist/js/npm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/ssm-crud-1.0-SNAPSHOT/static/js/jquery-1.12.4.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssm-crud/target/test-classes/com/lin/ssm/dao/EmployeeMapperTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ssm-crud/src/main/web/WEB-INF/web.xml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="$PROJECT_DIR$/../../../env/apache-maven-3.6.3" />
+        <option name="userSettingsFile" value="$PROJECT_DIR$/../../../env/apache-maven-3.6.3/conf/settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2BUbJi65eVQ54bJnqbRhihaBoma" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollToSource" value="true" />
+    <option name="foldersAlwaysOnTop" value="false" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="spring.boot" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7186bcc9-bd79-4a88-bc61-ed8575df87f9" name="Default Changelist" comment="" />
+      <created>1656963540528</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1656963540528</updated>
+      <workItem from="1656963542124" duration="2706000" />
+      <workItem from="1656966804371" duration="597000" />
+      <workItem from="1656968289253" duration="1791000" />
+      <workItem from="1657097618474" duration="67000" />
+      <workItem from="1657097701584" duration="178000" />
+    </task>
+    <task id="LOCAL-00001" summary="SSM CRUD  springboot 等 ✅">
+      <created>1657097761133</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1657097761133</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="SSM CRUD  springboot 等 ✅" />
+    <option name="LAST_COMMIT_MESSAGE" value="SSM CRUD  springboot 等 ✅" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lin.mapper.BrandMapper">
+    <resultMap id="BrandResultMap" type="com.lin.pojo.Brand">
+        <id column="id" property="id"/>
+        <result column="brand_name" property="brandName"/>
+        <result column="company_name" property="companyName"/>
+        <result column="status" property="status"/>
+        <result column="description" property="description"/>
+        <result column="ordered" property="ordered"/>
+    </resultMap>
+    <insert id="addBrand" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_brand(brand_name, company_name, ordered, description, status)
+        values (#{brandName},#{companyName},#{ordered},#{description},#{status})
+    </insert>
+
+    <update id="updateBrand" parameterType="com.lin.pojo.Brand">
+        update tb_brand
+        <set>
+            <if test="brandName!=null and brandName!=''">
+                brand_name = #{brandName}
+            </if>
+            <if test="companyName!=null and companyName!=''">
+                company_name = #{companyName}
+            </if>
+            <if test="ordered!=null ">
+                ordered = #{ordered}
+            </if>
+            <if test="description!=null and description!=''">
+                description = #{description}
+            </if>
+            <if test="status!=null">
+                status = #{status}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteBrandById" parameterType="int">
+        delete from tb_brand where id = #{id}
+    </delete>
+
+    <delete id="deleteBrandByIds">
+        delete from tb_brand where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBrandByIdsUseList">
+        delete from tb_brand where id in
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="selectAllBrand" resultMap="BrandResultMap">
+        select * from tb_brand
+    </select>
+    <select id="selectById" resultMap="BrandResultMap" parameterType="int">
+        select * from tb_brand where id = #{id}
+    </select>
+    <select id="selectByConditionUseMap" resultMap="BrandResultMap" parameterType="java.util.Map">
+        select * from tb_brand
+        <where>
+            <if test="status!=null">
+                status = #{status}
+            </if>
+            <if test="brandName!=null and brandName!=''">
+                and brand_name like concat('%',#{brandName},'%')
+            </if>
+            <if test="companyName!=null and companyName !=''">
+                and company_name like concat('%',#{companyName},'%')
+            </if>
+        </where>
+    </select>
+    <select id="selectByConditionDTO" resultMap="BrandResultMap" parameterType="com.lin.dto.BrandDTO">
+        select * from tb_brand
+        <where>
+            <if test="status!=null">
+                status = #{status}
+            </if>
+            <if test="brandName!=null and brandName!=''">
+                and brand_name like concat('%',#{brandName},'%')
+            </if>
+            <if test="companyName!=null and companyName !=''">
+                and company_name like concat('%',#{companyName},'%')
+            </if>
+        </where>
+    </select>
+    <select id="selectByCondition" resultMap="BrandResultMap">
+        select *
+        from tb_brand b
+        <where>
+            <if test="status!=''">
+                b.status = #{status}
+            </if>
+            <if test="brandName!=null and brandName!=''">
+                and b.brand_name like concat('%',#{brandName},'%')
+            </if>
+            <if test="companyName!=null and companyName !=''">
+                and b.company_name like concat('%',#{companyName},'%')
+            </if>
+        </where>
+    </select>
+    <select id="selectBrandBySingleType" resultMap="BrandResultMap">
+        select * from tb_brand
+        <where>
+            <choose>
+                <when test="status!=null">
+                    status = #{status}
+                </when>
+                <when test="brandName!=null and brandName!=''">
+                    brand_name = #{brandName}
+                </when>
+                <when test="companyName!=null and companyName !=''">
+                    company_name = #{companyName}
+                </when>
+            </choose>
+        </where>
+    </select>
+</mapper>

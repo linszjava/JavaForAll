@@ -1,0 +1,26 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: sentinel-openfeign-order-service
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8719
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+
+# 开启feign 对sentinel 的支持 默认为false
+feign:
+  sentinel:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+
+spring:
+  #  配置希望以什么前缀开头的访问路径  默认为 /**
+  mvc:
+    static-path-pattern: /res/**
+    # 使得可以自定义内容协商
+    contentnegotiation:
+      favor-parameter: true
+  #    配置自定义的静态资源位置 注意如果更改了新的存放位置，若希望原来位置的静态文件可以被访问，
+  #     需要重新声明位置  如 classpath:/static/
+  resources:
+    static-locations: [ classpath:/haha/,classpath:/static/ ]
+
+my:
+  prefix: great
+  suffix: hero
+
+

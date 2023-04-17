@@ -1,0 +1,41 @@
+server:
+  port: 6668
+
+spring:
+  application:
+    name: cloud-client-service
+  cloud:
+    config:
+#      按如下配置查询的是  main 分支下的 config-dev.yml 文件
+      label: main
+      profile: prod
+      name: config
+      uri: http://localhost:6666
+
+  rabbitmq:
+    port: 5672
+    username: guest
+    password: guest
+    host: localhost
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      #      defaultZone: http://localhost:7001/eureka
+      defaultZone: http://eureka-server-7001.com:7001/eureka,http://eureka-server-7002.com:7002/eureka
+
+  instance:
+    instance-id: cloud-config-client-6668
+    prefer-ip-address: true
+
+#config client expose 即可
+# 注意： 当发送刷新请求时，需要刷新通知的是客户端
+#http://config-6666.com:6667/actuator/refresh
+# 显然这种刷新方式效率低当有多个config-client时将遇瓶颈  解决办法： 采用Bus+Rabbitmq解决
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

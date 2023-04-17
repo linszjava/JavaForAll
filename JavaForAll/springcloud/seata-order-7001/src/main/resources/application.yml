@@ -1,0 +1,64 @@
+server:
+  port: 7001
+spring:
+  application:
+    name: seata-order-samples
+
+  datasource:
+    #    type: com.alibaba.druid.pool.DruidDataSource            # 当前数据源操作类型
+    driver-class-name: com.mysql.jdbc.Driver              # mysql驱动包
+    url: jdbc:mysql://localhost:3306/seata_order?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: root
+
+
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: ${spring.application.name}-tx_group
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: 7d1344d5-c048-40da-91d6-77a1d4114123
+
+
+seata:
+  application-id: ${spring.application.name}
+  service:
+    vgroup-mapping:
+      seata-order-samples-tx_group: default
+  registry:
+    type: nacos
+    nacos:
+      server-addr: ${spring.cloud.nacos.discovery.server-addr}
+      username: nacos
+      password: nacos
+      group: SEATA_GROUP
+      namespace: 7d1344d5-c048-40da-91d6-77a1d4114123
+      #      seata 服务名
+      application: seata-server
+  config:
+    type: nacos
+    nacos:
+      server-addr: ${spring.cloud.nacos.discovery.server-addr}
+      username: nacos
+      password: nacos
+      group: SEATA_GROUP
+      namespace: 7d1344d5-c048-40da-91d6-77a1d4114123
+
+
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 30000
+        read-timeout: 30000
+
+
+
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.lin.order.entities
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+

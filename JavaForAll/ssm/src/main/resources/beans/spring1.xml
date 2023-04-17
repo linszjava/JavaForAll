@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="Book" class="com.lin.spring.pojo.Book">
+        <property name="bookName" value="《老人与海》"/>
+        <property name="bookAuthor" value="海明威"/>
+    </bean>
+
+    <bean id="Book2" class="com.lin.spring.pojo.Book">
+        <property name="bookName" value="《老人与海》"/>
+        <property name="bookAuthor" value="海明威"/>
+        <property name="tag" ref="Tag"/>
+        <property name="tag.tagName" value="外国著作"/>
+        <property name="tag.desc" value="经典中的经典"/>
+    </bean>
+
+    <bean id="Tag" class="com.lin.spring.pojo.Tag"></bean>
+
+    <!-- 构造器注入    -->
+    <!--    <bean id="Book1" class="com.lin.spring.pojo.Book">-->
+    <!--        <constructor-arg name="bookName" value="《苏东坡传》"/>-->
+    <!--        <constructor-arg name="bookAuthor" value="林语堂"/>-->
+    <!--    </bean>-->
+
+</beans>

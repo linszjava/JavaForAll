@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body>
+<h2>hello springmvc</h2>
+<a th:href="@{/target}">点我到target</a>
+<br/>
+<br>
+<!--    <form th:action="@{/testParam}" method="post">-->
+<!--        用户名：<input type="text" name="user_name"><br>-->
+<!--        密码：<input type="password" name="password"><br>-->
+<!--        爱好：<input type="checkbox" name="hobby" value="篮球">篮球-->
+<!--        <input type="checkbox" name="hobby" value="足球">足球-->
+<!--        <input type="checkbox" name="hobby" value="橄榄球">橄榄球<br>-->
+<!--        <input type="submit" name="登录">-->
+<!--    </form>-->
+<a th:href="@{/modelAndView}">modelAndView</a>
+<a th:href="@{/testModel}">testModel</a>
+<a th:href="@{/testMap}">testMap</a>
+<a th:href="@{/testModelMap}">testModelMap</a>
+<a th:href="@{/testForward}">testForward</a>
+<a th:href="@{/testRedirect}">testRedirect</a> <br>
+<a th:href="@{/testDown}">下载</a> <br>
+
+
+</body>
+</html>

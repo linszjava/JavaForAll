@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="otherType" class="com.lin.spring.pojo.OtherType">
+        <property name="arrayString">
+            <array>
+                <value>Java基础</value>
+                <value>JavaWeb</value>
+                <value>JavaEE</value>
+            </array>
+        </property>
+        <property name="stringList">
+            <list>
+                <value>mybatis</value>
+                <value>spring</value>
+                <value>springmvc</value>
+            </list>
+        </property>
+        <property name="stringSet">
+            <set>
+                <value>springboot</value>
+                <value>springCloud</value>
+                <value>springCloud Alibaba</value>
+            </set>
+        </property>
+        <property name="hashMap">
+            <map>
+                <entry key="base" value="javaSE"></entry>
+                <entry key="advanced" value="springCloud"></entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>

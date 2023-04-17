@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lin.mybatis.mapper.DepartmentMapper">
+
+    <resultMap id="DepartmentWithEmpsMap" type="Departments">
+        <id column="department_id" property="departmentId"/>
+        <result column="department_name" property="departmentName"/>
+        <result column="manager_id" property="managerId"/>
+        <result column="location_id" property="locationId"/>
+        <collection property="employeesList" ofType="Employees">
+            <id column="employee_id" property="employeeId"/>
+            <result column="first_name" property="firstName"/>
+            <result column="last_name" property="lastName"/>
+            <result column="email" property="email"/>
+            <result column="phone_number" property="phoneNumber"/>
+            <result column="hire_date" property="hireDate"/>
+            <result column="job_id" property="jobId"/>
+            <result column="salary" property="salary"/>
+            <result column="commission_pct" property="commissionPct"/>
+            <result column="manager_id" property="managerId"/>
+            <result column="department_id" property="departmentId"/>
+        </collection>
+    </resultMap>
+
+    <select id="getDepartmentWithEmpsById" resultMap="DepartmentWithEmpsMap">
+
+        SELECT d.department_id , d.department_name,e.*
+        FROM departments d LEFT JOIN employees e
+        ON d.department_id = e.department_id
+        WHERE d.department_id = #{departmentId};
+    </select>
+
+
+    <select id="selectAllByCondition" resultMap="com.lin.mybatis.mapper.EmployeeMapper.EmployeeMapWithDept">
+        SELECT e.*, d.department_name
+        FROM employees e LEFT JOIN departments d
+        ON e.department_id = d.department_id
+        <where>
+            <if test="managerName!=null and managerName!=''">
+                e.manager_id =
+                (SELECT em.employee_id
+                FROM employees em
+                WHERE em.last_name LIKE CONCAT('%',#{managerName},'%'))
+            </if>
+            <if test="departmentName!=null and departmentName!=''">
+                OR
+                (d.department_name LIKE CONCAT('%',#{departmentName},'%'))
+            </if>
+        </where>
+
+    </select>
+</mapper>

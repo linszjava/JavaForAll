@@ -1,0 +1,1529 @@
+-- 1.REGEXP 正则表达式 
+SELECT 'linshaozheng' REGEXP '^l', 'linshaozheng'  REGEXP 'g$', 'linshaozheng'  REGEXP '[ao]'
+FROM DUAL;
+
+
+-- 2. 位运算符号 
+SELECT 7>> 1
+FROM DUAL;
+
+-- 3. 排序和分页 练习 
+SELECT last_name,first_name ,department_id, salary* 12 AS '年薪'
+FROM employees
+ORDER BY salary DESC, first_name ASC;
+
+SELECT first_name, salary
+FROM employees
+WHERE salary NOT BETWEEN 8000 AND 17000
+ORDER BY salary DESC
+LIMIT 21,20;
+
+SELECT *
+FROM employees
+WHERE email LIKE '%e%'
+ORDER BY LENGTH(email) DESC, department_id ASC;
+
+
+-- 多表查询  非等值连接 
+SELECT e.first_name, e.salary, jg.grade_level
+FROM employees e , job_grades jg 
+WHERE e.salary  BETWEEN jg.lowest_sal AND jg.highest_sal;
+
+-- 自连接 
+SELECT e.employee_id, e.last_name, m.employee_id AS '管理者id', m.first_name AS '管理者姓名'
+FROM employees e, employees m 
+WHERE e.manager_id = m.employee_id
+ORDER BY e.employee_id ASC;
+
+-- 多表查询 练习 
+SELECT * FROM employees
+# 1.显示所有员工的姓名，部门号和部门名称。
+SELECT e.first_name, d.department_id, d.department_name
+FROM employees e LEFT JOIN departments d
+ON e.department_id = d.department_id;
+# 2.查询90号部门员工的job_id和90号部门的location_id
+SELECT e.job_id, d.location_id,d.department_id
+FROM employees e LEFT JOIN departments d 
+ON e.department_id = d.department_id
+WHERE e.department_id = 90;
+
+SELECT e.job_id, d.location_id,d.department_id
+FROM employees e , departments d 
+WHERE e.department_id = d.department_id AND e.department_id = 90;
+
+# 3.选择所有有奖金的员工的 last_name , department_name , location_id , city   35r
+SELECT e.last_name, d.department_name,l.location_id, l.city, e.commission_pct
+FROM employees e LEFT JOIN departments d 
+ON e.employee_id = d.department_id  LEFT JOIN locations l 
+ON l.location_id = d.location_id
+WHERE e.commission_pct IS NOT NULL;
+
+-- 以下的等值查询是不完整的 
+SELECT e.last_name, d.department_name,l.location_id, l.city, e.commission_pct
+FROM employees e ,departments d ,locations l 
+WHERE e.employee_id = d.department_id  
+AND l.location_id = d.location_id
+AND e.commission_pct IS NOT NULL;
+
+# 4.选择city在Toronto工作的员工的 last_name , job_id , department_id , department_name 
+SELECT e.last_name, e.job_id, e.department_id, d.department_name, l.city
+FROM employees e LEFT JOIN departments d 
+ON e.department_id = d.department_id
+LEFT JOIN locations l 
+ON l.location_id = d.location_id
+WHERE l.city = 'Toronto';
+# 5.查询员工所在的部门名称、部门地址、姓名、工作、工资，其中员工所在部门的部门名称为’Executive’
+SELECT d.department_name, l.street_address , e.first_name,e.last_name, j.job_title, e.salary
+FROM employees e LEFT JOIN departments d 
+ON e.department_id = d.department_id LEFT JOIN locations l 
+ON d.location_id = l.location_id LEFT JOIN jobs j 
+ON j.job_id = e.job_id
+WHERE d.department_name = 'Executive';
+# 6.选择指定员工的姓名，员工号，以及他的管理者的姓名和员工号，结果类似于下面的格式 employees Emp# manager Mgr#
+#kochhar 101 king
+SELECT e.first_name ,e.last_name ,e.employee_id , m.manager_id,m.last_name
+FROM employees e LEFT JOIN employees m 
+ON e.manager_id = m.employee_id;
+# 7.查询哪些部门没有员工
+SELECT d.department_id, d.department_name , e.last_name
+FROM departments d LEFT JOIN employees e 
+ON d.department_id = e.department_id
+WHERE e.last_name IS NULL;
+
+SELECT d.department_id
+FROM departments d LEFT JOIN employees e ON e.department_id = d.`department_id` WHERE e.department_id IS NULL
+# 8. 查询哪个城市没有部门
+SELECT l.city ,d.department_name
+FROM locations l LEFT JOIN departments d 
+ON l.location_id = d.location_id
+WHERE d.department_name IS NULL;
+# 9. 查询部门名为 Sales 或 IT 的员工信息
+SELECT e.*, d.department_name
+FROM employees e LEFT JOIN departments d 
+ON e.department_id = d.department_id
+WHERE d.department_name = 'Sales' OR d.department_name = 'IT';
+
+
+--       自从2022-7-13 开始 --------------
+
+--   单行函数 
+SELECT DEGREES(PI()), LN(10) , LOG10(10)
+FROM DUAL
+
+SELECT ASCII('E'), CHAR_LENGTH("我们"), LENGTH("我们"),LENGTH("abv")
+FROM DUAL
+
+SELECT CONCAT('-','hello','-'), CONCAT_WS('=','hello','mysql','best')
+FROM DUAL
+
+SELECT e.*, LPAD(e.last_name,18,'*') AS "右对齐名字"
+FROM employees e 
+
+
+SELECT REVERSE("linsz")
+FROM DUAL
+
+SELECT CURRENT_DATE ,CURRENT_TIME ,CURRENT_USER ,CURRENT_TIMESTAMP,NOW()
+FROM DUAL
+
+SELECT UTC_DATE()+0,UTC_TIME()
+FROM DUAL
+
+SELECT UNIX_TIMESTAMP(),FROM_UNIXTIME(1657743260)
+FROM DUAL
+
+SELECT YEAR(NOW()), MONTH(NOW()), DAY(NOW()), HOUR(NOW()),WEEKDAY(NOW()),DAYOFYEAR(NOW())
+FROM DUAL
+
+SELECT EXTRACT(MINUTE FROM NOW()),TIME_TO_SEC(NOW()),SEC_TO_TIME(16387)
+FROM DUAL
+
+SELECT DATE_ADD(NOW(),INTERVAL 1 DAY)
+FROM DUAL
+
+SELECT DATE_FORMAT(NOW(),'%M%D%Y')
+FROM DUAL
+
+SELECT e.commission_pct, IF(e.commission_pct IS NOT NULL,e.commission_pct,0)
+FROM employees e 
+
+SELECT e.commission_pct, IFNULL(e.commission_pct,0)
+FROM employees e 
+
+
+SELECT e.employee_id, e.salary, CASE
+	WHEN e.salary>15000 THEN
+	  '富者'
+	WHEN e.salary>8000 THEN
+	  '人上人'
+	ELSE
+		'打工仔'
+END  '别称'
+FROM employees e 
+
+-- 加密与解密函数 
+SELECT PASSWORD("linsz"),MD5("linsz"),SHA("linsz")
+FROM DUAL
+
+SELECT ENCODE("linsz","haha"),DECODE(ENCODE("linsz","haha"),"haha")
+FROM DUAL
+
+-- mysql 信息函数 
+SELECT VERSION(), CONNECTION_ID(), DATABASE(),SCHEMA(),USER(),CHARSET("linsz"), COLLATION("linsz")
+FROM DUAL
+
+--  8 聚合函数 
+SELECT MAX(salary), MIN(salary), COUNT(*), AVG(salary),SUM(salary),COUNT(commission_pct)
+FROM employees
+
+
+--  group by   2022-7-14
+
+SELECT department_id,AVG(salary)
+FROM employees 
+GROUP BY department_id,job_id;
+
+-- having 
+
+SELECT e.* ,d.*
+FROM employees e LEFT JOIN departments d 
+ON e.department_id = d.department_id;
+
+SELECT e.* , d.*
+FROM employees e , departments d 
+WHERE e.department_id = d.department_id
+ORDER BY e.employee_id ASC
+
+SELECT e.* ,d.*
+FROM employees e INNER JOIN departments d 
+ON e.department_id = d.department_id
+
+
+SELECT e.department_id ,d.department_name, MAX(salary)
+FROM employees e INNER  JOIN departments d 
+ON e.department_id = d.department_id
+GROUP BY department_id,department_name
+
+
+#1.where子句可否使用组函数进行过滤?  不可以 
+
+#2.查询公司员工工资的最大值，最小值，平均值，总和 
+SELECT MAX(salary), MIN(salary),AVG(salary),SUM(salary)
+FROM employees
+
+#3.查询各job_id的员工工资的最大值，最小值，平均值，总和 
+SELECT j.job_id, MAX(e.salary),MIN(e.salary),AVG(e.salary),SUM(e.salary)
+FROM jobs j LEFT JOIN employees e 
+ON j.job_id = e.job_id
+GROUP BY job_id
+
+SELECT job_id, MAX(salary), MIN(salary), AVG(salary), SUM(salary)
+FROM employees
+GROUP BY job_id;
+#4.选择具有各个job_id的员工人数  INNER JOIN 
+SELECT j.job_id, COUNT(e.employee_id)
+FROM jobs j LEFT JOIN employees e 
+ON j.job_id = e.job_id
+GROUP BY job_id
+
+SELECT job_id ,COUNT(*)
+FROM employees 
+WHERE job_id IS NOT NULL
+GROUP BY job_id
+
+SELECT job_id, COUNT(*)
+FROM employees
+GROUP BY job_id;
+
+# 5.查询员工最高工资和最低工资的差距(DIFFERENCE)
+SELECT (MAX(e.salary)-MIN(e.salary)) 
+FROM employees e 
+
+# 6.查询各个管理者手下员工的最低工资，其中最低工资不能低于6000，没有管理者的员工不计算在内 
+SELECT  m.employee_id , MIN(e.salary)
+FROM employees e INNER JOIN employees m 
+ON e.manager_id = m.employee_id
+GROUP BY m.employee_id
+HAVING MIN(e.salary) > 6000
+
+SELECT manager_id, MIN(salary)
+FROM employees
+WHERE manager_id IS NOT NULL
+GROUP BY manager_id
+HAVING MIN(salary) > 6000;
+
+# 7.查询所有部门的名字，location_id，员工数量和平均工资，并按平均工资降序
+SELECT d.department_name,d.location_id, COUNT(e.employee_id),AVG(e.salary)
+FROM departments d LEFT JOIN employees e 
+ON d.department_id = e.department_id
+GROUP BY d.department_id,d.department_name,d.location_id
+ORDER BY AVG(e.salary) DESC
+
+SELECT department_name, location_id, COUNT(employee_id), AVG(salary) avg_sal
+FROM employees e RIGHT JOIN departments d
+ON e.`department_id` = d.`department_id`
+GROUP BY department_name, location_id
+ORDER BY avg_sal DESC;
+
+# 8.查询每个工种、每个部门的部门名、工种名和最低工资  其实emp表里面也有job.id 
+SELECT j.job_id, d.department_name, MIN(e.salary)
+FROM employees e RIGHT  JOIN departments d 
+ON e.department_id = d.department_id
+LEFT JOIN jobs j 
+ON e.job_id = j.job_id
+GROUP BY j.job_id,d.department_name
+
+SELECT department_name,job_id,MIN(salary)
+FROM departments d LEFT JOIN employees e
+ON e.`department_id` = d.`department_id`
+GROUP BY department_name,job_id
+
+-- 子查询  单行子查询 
+-- 题目:查询工资大于149号员工工资的员工的信息
+SELECT e.*
+FROM employees e 
+WHERE e.salary > (
+								SELECT salary 
+								FROM employees 
+								WHERE employee_id = 149
+)
+
+-- 题目:返回公司工资最少的员工的last_name,job_id和salary
+SELECT e.last_name,e.job_id,e.salary
+FROM employees e 
+WHERE e.salary = (
+							SELECT MIN(salary)
+							FROM employees 
+)
+-- 题目:查询与141号或174号员工的manager_id和department_id相同的其他员工的employee_id， manager_id，department_id
+SELECT e.employee_id, e.manager_id,e.department_id
+FROM employees e 
+WHERE manager_id  IN (
+										SELECT manager_id 
+										FROM employees 
+										WHERE employee_id = 141 OR employee_id = 174
+) 
+AND department_id IN (
+									 SELECT department_id 
+									 FROM employees
+									 WHERE employee_id = 141 OR employee_id = 174
+)
+AND e.employee_id NOT IN (141,174)
+
+-- 题目:查询最低工资大于50号部门最低工资的部门id和其最低工资
+SELECT department_id,MIN(salary)
+FROM employees
+GROUP BY department_id 
+HAVING MIN(salary) > (
+											SELECT MIN(salary)
+											FROM employees 
+											WHERE department_id = 50
+)
+
+-- 题目:显式员工的employee_id,last_name和location。其中，若员工department_id与location_id为1800 的department_id相同，则location为’Canada’，其余则为’USA’。
+
+SELECT employee_id, last_name,CASE  
+	WHEN department_id IN 
+(SELECT d.department_id
+FROM departments d 
+WHERE d.location_id = 1800) THEN
+		'Canada'
+	ELSE
+		'USA'
+END location
+FROM employees
+
+SELECT employee_id, last_name,
+       (CASE department_id
+        WHEN
+             (SELECT department_id FROM departments
+          WHERE location_id = 1800)
+        THEN 'Canada' ELSE 'USA' END) location
+FROM   employees;
+
+
+-- 题目:返回其它job_id中比job_id为‘IT_PROG’部门任一工资低的员工的员工号、姓名、job_id 以及salary
+SELECT e.employee_id,e.last_name,e.job_id,e.salary
+FROM employees e 
+WHERE e.salary < ANY  (
+										SELECT salary
+										FROM employees
+										WHERE job_id = 'IT_PROG'
+)
+AND e.job_id <> 'IT_PROG'
+
+-- 题目:返回其它job_id中比job_id为‘IT_PROG’部门所有工资都低的员工的员工号、姓名、job_id以及 salary
+SELECT e.employee_id,e.last_name,e.job_id,e.salary
+FROM employees e 
+WHERE e.salary < ALL  (
+										SELECT salary
+										FROM employees
+										WHERE job_id = 'IT_PROG'
+)
+AND e.job_id <> 'IT_PROG'
+
+-- 题目:查询平均工资最低的部门id
+					
+SELECT department_id 
+FROM employees
+GROUP BY department_id
+HAVING AVG(salary) = (
+			SELECT MIN(avg_sal)
+			FROM (
+				SELECT  AVG(salary) avg_sal 
+						FROM employees
+						GROUP BY department_id
+			) t_avg_sal
+	
+)
+
+-- 题目:查询员工中工资大于本部门平均工资的员工的last_name,salary和其department_id
+--  不用分组 
+SELECT department_id,AVG(salary)
+FROM employees
+GROUP BY department_id
+
+SELECT e1.last_name,e1.salary,e1.department_id
+FROM employees e1 
+WHERE salary > (
+			SELECT AVG(salary)
+			FROM employees e2
+			WHERE e1.department_id = e2.department_id
+)
+
+SELECT department_id,AVG(salary) avg_sal
+FROM employees
+GROUP BY department_id
+--  如下也行 
+SELECT e1.last_name,e1.salary,e1.department_id
+FROM employees e1 , (SELECT department_id,AVG(salary) avg_sal FROM employees GROUP BY department_id) e2 
+WHERE e1.department_id = e2.department_id
+AND
+e1.salary > e2.avg_sal 
+
+-- 题目:查询员工的id,salary,按照department_name 排序
+SELECT employee_id,salary
+FROM employees,departments
+ORDER BY department_name
+
+SELECT e.employee_id,e.salary
+FROM employees e 
+ORDER BY (
+					SELECT d.department_name
+					FROM departments d 
+					WHERE e.department_id = d.department_id
+)
+
+-- 题目:若employees表中employee_id与job_history表中employee_id相同的数目不小于2，输出这些相同 id的员工的employee_id,last_name和其job_id
+SELECT e.employee_id , e.last_name, e.job_id
+FROM employees e 
+WHERE 2<= (
+					SELECT COUNT(*)
+					FROM job_history jh 
+					WHERE e.employee_id = jh.employee_id
+)
+
+
+-- 题目:查询公司管理者的employee_id，last_name，job_id，department_id信息
+SELECT e.employee_id, e.last_name, e.department_id
+FROM employees e
+WHERE e.employee_id IN (
+											SELECT DISTINCT m.manager_id  
+											FROM employees m 
+											WHERE m.manager_id IS NOT NULL
+)
+
+SELECT DISTINCT m.employee_id, m.last_name, m.department_id
+FROM employees e INNER JOIN employees m 
+WHERE e.manager_id = m.employee_id
+
+-- 题目:查询departments表中，不存在于employees表中的部门的department_id和department_name
+SELECT department_id , department_name 
+FROM departments d
+WHERE NOT EXISTS (
+ SELECT *
+ FROM employees
+ WHERE department_id = d.department_id
+)
+
+
+
+ -- 整数类型： TINYINT SMALLINT MEDIUMINT INT INTEGER BIGINT 
+
+CREATE TABLE test_int2(
+f1 INT,
+f2 INT(5),
+f3 INT(5) ZEROFILL
+)
+
+DESC test_int2; 
+
+-- 插入的位数即便超过规定的位数 依旧能插入进去 ZEROFILL ：如果位数不够 向左补零 
+INSERT INTO test_int2(f1,f2,f3)
+VALUES(1,123,123);
+
+INSERT INTO test_int2(f1,f2)
+VALUES(123456,123456);
+
+
+INSERT INTO test_int2(f1,f2,f3)
+VALUES(123456,123456,123456);
+
+CREATE TABLE test_int3(
+f1 INT UNSIGNED
+);
+
+desc test_int3;
+
+
+-- 浮点数 FLOAT DOUBLE REAL
+
+CREATE TABLE test_double1(
+f1 FLOAT,
+f2 FLOAT(5,2),
+f3 DOUBLE,
+f4 DOUBLE(5,2)
+);
+
+DESC test_double1;
+
+-- 四舍五入 
+INSERT INTO test_double1
+VALUES(123.456,123.456,123.4567,123.456);
+
+-- > 1264 - Out of range value for column 'f2' at row 1
+INSERT INTO test_double1
+VALUES(123.456,1234.456,123.4567,123.45);
+
+SELECT * FROM test_double1;
+
+CREATE TABLE test_double2(
+f1 DOUBLE
+);
+
+INSERT INTO test_double2
+VALUES(0.47),(0.44),(0.19);
+
+-- 会丢失精度 
+SELECT SUM(f1) FROM test_double2;
+
+-- 定点数  DECIMA(M,D) 取值范围相对浮点数小 但是精度高 
+CREATE TABLE test_decimal1(
+f1 DECIMAL,
+f2 DECIMAL(5,2)
+);
+
+
+DESC test_decimal1;
+
+INSERT INTO test_decimal1(f1,f2)
+VALUES(123.123,123.456);
+
+-- 1264 - Out of range value for column 'f2' at row 1
+INSERT INTO test_decimal1(f2)
+VALUES(1234.34)
+
+SELECT * FROM test_decimal1;
+
+ALTER TABLE test_double2
+MODIFY f1 DECIMAL(5,2);
+
+SELECT SUM(f1) 
+FROM test_double2;
+
+CREATE TABLE test_bit1(
+f1 BIT,
+f2 BIT(5),
+f3 BIT(64)
+);
+
+INSERT INTO test_bit1(f1)
+VALUES(1);
+-- Data too long for column 'f1' at row 1
+INSERT INTO test_bit1(f1)
+VALUES(2);
+
+INSERT INTO test_bit1(f2)
+VALUES(23);
+
+SELECT * FROM test_bit1;
+
+SELECT BIN(f2),HEX(f2) FROM test_bit1;
+
+SELECT f2 + 0 FROM test_bit1;
+
+-- 日期与时间  YEAR DATE TIME DATETIME TIMESTAMP 
+CREATE TABLE test_year(
+f1 YEAR,
+f2 YEAR(4)
+);
+
+DESC test_year 
+
+INSERT INTO test_year
+VALUES('2022','2021');
+
+SELECT * FROM test_year;
+
+
+INSERT INTO test_year
+VALUES('45','71');
+
+INSERT INTO test_year
+VALUES(0,'0');
+
+CREATE TABLE test_date1(
+f1 DATE
+);
+
+INSERT INTO test_date1
+VALUES ('2020-10-01'), ('20201001'),(20201001);
+
+INSERT INTO test_date1
+VALUES ('00-01-01'), ('000101'), ('69-10-01'), ('691001'), ('70-01-01'), ('700101'),
+('99-01-01'), ('990101');
+
+INSERT INTO test_date1
+VALUES (000301), (690301), (700301), (990301);
+
+INSERT INTO test_date1
+VALUES (CURRENT_DATE()), (NOW());
+
+SELECT *
+FROM test_date1;
+
+CREATE TABLE test_time1(
+f1 TIME
+);
+
+INSERT INTO test_time1
+VALUES('2 12:30:29'), ('12:35:29'), ('12:40'), ('2 12:40'),('1 05'), ('45');
+
+
+INSERT INTO test_time1
+VALUES ('123520'), (124011),(1210);
+
+INSERT INTO test_time1
+VALUES (NOW()), (CURRENT_TIME());
+
+SELECT * FROM test_time1;
+
+CREATE TABLE test_timestamp1(
+ts TIMESTAMP
+);
+
+INSERT INTO test_timestamp1
+VALUES ('1999-01-01 03:04:50'), ('19990101030405'), ('99-01-01 03:04:05'),
+('990101030405');
+
+
+INSERT INTO test_timestamp1
+VALUES ('2020@01@01@00@00@00'), ('20@01@01@00@00@00');
+INSERT INTO test_timestamp1
+VALUES (CURRENT_TIMESTAMP()), (NOW());
+
+-- Incorrect datetime value: '2038-01-20 03:14:07' for column 'ts' at row 1
+INSERT INTO test_timestamp1
+VALUES ('2038-01-20 03:14:07');
+
+CREATE TABLE temp_time(
+d1 DATETIME,
+d2 TIMESTAMP
+);
+ INSERT INTO temp_time VALUES('2021-9-2 14:45:52','2021-9-2 14:45:52');
+INSERT INTO temp_time VALUES(NOW(),NOW());
+
+SELECT * FROM temp_time;
+
+-- 文本字符串类型 
+--  char VARCHAR(M) TINYTEXT text MEDIUMTEXT LONGTEXT enum set 
+
+CREATE TABLE test_char1(
+c1 CHAR,
+c2 CHAR(5)
+);
+
+
+DESC test_char1;
+
+INSERT INTO test_char1
+VALUES('a','Tom');
+
+SELECT c1,CONCAT(c2,'***') FROM test_char1;
+
+INSERT INTO test_char1(c2)
+VALUES('a  ');
+
+SELECT c2, CHAR_LENGTH(c2)
+FROM test_char1;
+
+CREATE TABLE test_varchar3(
+NAME VARCHAR(5)
+);
+
+INSERT INTO test_varchar3 
+VALUES('我爱你'),('我真的爱你');
+
+-- 整型范围超了规定的可以继续存下去  字符型的定义的范围超了直接报错 
+--  Data too long for column 'NAME' at row 1
+INSERT INTO test_varchar3 VALUES('我是真的真的爱你');
+
+
+-- text TINYTEXT MEDIUMTEXT LONGTEXT
+CREATE TABLE test_text(
+tx TEXT
+);
+INSERT INTO test_text
+VALUES('linsz    ');
+
+SELECT CHAR_LENGTH(tx)
+FROM test_text; # 空格也算 
+
+-- enum 
+CREATE TABLE test_enum(
+season ENUM('春','夏','秋','冬','unknow') );
+
+INSERT INTO test_enum VALUES('春'),('秋');
+
+INSERT INTO test_enum VALUES('UNKNOW');
+
+INSERT INTO test_enum VALUES('1'),(3);
+--  Data truncated for column 'season' at row 1
+INSERT INTO test_enum
+VALUES('aa');
+
+INSERT INTO test_enum
+VALUES(NULL);
+
+SELECT * FROM test_enum;
+
+CREATE TABLE test_set(
+s SET ('A', 'B', 'C')
+);
+
+INSERT INTO test_set (s) VALUES ('A'), ('A,B'); 
+
+#插入重复的SET类型成员时，MySQL会自动删除重复的成员
+INSERT INTO test_set (s) VALUES ('A,B,C,A'); 
+
+#向SET类型的字段插入SET成员中不存在的值时，MySQL会抛出错误。
+INSERT INTO test_set (s) VALUES ('A,B,C,D');
+
+SELECT *
+FROM test_set;
+
+CREATE TABLE temp_mul(
+gender ENUM('男','女'),
+hobby SET('吃饭','睡觉','打豆豆','写代码') );
+
+INSERT INTO temp_mul VALUES('男','睡觉,打豆豆');
+-- Data truncated for column 'gender' at row 1
+INSERT INTO temp_mul VALUES('男,女','睡觉,写代码'); #失败
+
+--  二进制字符串 
+CREATE TABLE test_binary1(
+f1 BINARY,
+f2 BINARY(3),
+# f3 VARBINARY,
+f4 VARBINARY(10)
+);
+
+INSERT INTO test_binary1(f1,f2)
+VALUES('a','a');
+-- Data too long for column 'f1' at row 1
+INSERT INTO test_binary1(f1,f2) VALUES('尚','尚');#失败
+
+INSERT INTO test_binary1(f2,f4)
+VALUES('ab','ab');
+
+SELECT LENGTH(f2),LENGTH(f4) FROM test_binary1;
+
+CREATE TABLE test_json(
+js json
+);
+
+INSERT INTO test_json (js)
+VALUES ('{"name":"linsz", "age":18, "address":{"province":"beijing",
+"city":"beijing"}}');
+
+SELECT * FROM test_json;
+
+-- constraint 约束  
+-- 非空约束 唯一约束 主键约束 外键约束 默认值约束 检查约束
+
+CREATE TABLE emp(
+id INT(10) NOT NULL,
+NAME VARCHAR(20) NOT NULL,
+sex CHAR NULL
+);
+
+CREATE TABLE student(
+    sid int,
+    sname varchar(20) not null,
+    tel char(11) ,
+    cardid char(18) not null
+);
+
+insert into student values(1,'张三','13710011002','110222198912032545'); 
+-- Column 'cardid' cannot be null
+insert into student values(2,'李四','13710011002',null);
+
+insert into student values(2,'李四',null,'110222198912032546');
+-- Column 'sname' cannot be null
+insert into student values(3,null,null,'110222198912032547');
+
+
+ALTER TABLE student 
+MODIFY tel char(11) NOT NULL;
+
+SELECT * FROM student;
+--  > 1048 - Column 'tel' cannot be null
+insert into student values(3,'王五',null,'22222222222222');
+
+-- unique  唯一约束 
+
+DROP TABLE student;
+
+
+create table student(
+    sid int,
+    sname varchar(20),
+    tel char(11) unique,
+    cardid char(18) unique key
+);
+
+CREATE TABLE t_course(
+    cid INT UNIQUE,
+    cname VARCHAR(100) UNIQUE,
+    description VARCHAR(200)
+);
+
+CREATE TABLE USER(
+id INT NOT NULL,
+NAME VARCHAR(25),
+PASSWORD VARCHAR(16),
+-- 使用表级约束语法
+CONSTRAINT uk_name_pwd UNIQUE(NAME,PASSWORD)
+);
+
+insert into student values(1,'张三','13710011002','101223199012015623'); 
+insert into student values(2,'李四','13710011003','101223199012015624');
+
+ -- Duplicate entry '13710011002' for key 'tel' 
+ -- Duplicate entry '101223199012015623' for key 'cardid'
+insert into student values(3,'张三','13710011004','101223199012015625'); 
+SELECT * FROM student;
+
+DESC student;
+
+ALTER TABLE student ADD  CONSTRAINT uk_stu_sname UNIQUE(sname);
+
+ALTER TABLE student MODIFY sname VARCHAR(20)  NULL UNIQUE;
+
+
+SELECT * 
+FROM information_schema.TABLE_CONSTRAINTS
+WHERE table_name='student';
+
+create table course(
+cid int, #课程编号 
+cname varchar(20)
+#课程名称
+);
+
+create table student_course(
+id int,
+sid int,
+cid int,
+score int,
+unique key(sid,cid) #复合唯一
+);
+
+insert into student values(1,'张三','13710011002','101223199012015623');#成功 
+insert into student values(2,'李四','13710011003','101223199012015624');#成功 
+insert into course values(1001,'Java'),(1002,'MySQL');#成功
+
+
+select * from course;
+select * from student_course;
+
+insert into student_course values
+(1, 1, 1001, 89),
+(2, 1, 1002, 90),
+(3, 2, 1001, 88),
+(4, 2, 1002, 56);
+
+-- 2 - Duplicate entry '1-1001' for key 'sid'
+insert into student_course values (5, 1, 1001, 88);
+
+ SELECT * FROM information_schema.table_constraints WHERE table_name = 'user';
+
+ALTER TABLE user DROP INDEX uk_name_pwd;
+
+
+-- primary key 主键约束 
+create table temp(
+    id int primary key,
+    name varchar(20)
+);
+
+desc temp;
+
+ insert into temp values(1,'张三');#成功 
+ insert into temp values(2,'李四');#成功
+
+select * from temp;
+-- Duplicate entry '1' for key 'PRIMARY'
+insert into temp values(1,'王五');
+
+insert into temp values(4,null);#成功
+-- 8 - Column 'id' cannot be null
+insert into temp values(null,'李琦');#失败
+
+CREATE TABLE emp4(
+id INT PRIMARY KEY AUTO_INCREMENT ,
+NAME VARCHAR(20)
+);
+
+CREATE TABLE emp5(
+id INT NOT NULL AUTO_INCREMENT,
+NAME VARCHAR(20),
+pwd VARCHAR(15),
+CONSTRAINT emp5_id_pk PRIMARY KEY(id)
+);
+
+SELECT * FROM information_schema.table_constraints WHERE table_name = 'emp5';
+
+ALTER TABLE emp5 DROP PRIMARY KEY;
+
+ALTER TABLE emp5 ADD PRIMARY KEY(NAME,pwd);
+
+--  一张表不允许存在两个主键  但是允许存在复合主键 
+CREATE TABLE emp6(
+id INT NOT NULL,
+NAME VARCHAR(20),
+pwd VARCHAR(15),
+CONSTRAINT emp7_pk PRIMARY KEY(NAME,pwd)
+);
+
+
+
+create table my_employee(
+    eid int primary key auto_increment,
+    ename varchar(20)
+);
+
+desc my_employee;
+
+CREATE TABLE test1(
+id INT PRIMARY KEY AUTO_INCREMENT
+);
+
+INSERT INTO test1
+VALUES(0),(0),(0),(0);
+
+SELECT * FROM test1;
+
+
+-- 视图 
+
+CREATE VIEW empview80 
+AS
+SELECT e.employee_id, e.last_name, e.salary 
+FROM atguigudb.employees e 
+WHERE e.department_id = 80;
+
+SELECT * FROM empview80;
+
+CREATE TABLE my_emp 
+AS
+SELECT * FROM atguigudb.employees;
+
+SELECT * FROM my_emp;
+
+-- 则视图中字段列表默认和SELECT语句中的字 段列表一致。如果SELECT语句中给字段取了别名，那么视图中的字段名和别名相同
+-- 但是不会改变原来表中的字段名 
+CREATE VIEW emp_year_salary(ename,year_salary)
+AS
+SELECT first_name, salary*12*(1+IFNULL(commission_pct,0))
+FROM my_emp;
+
+SELECT * FROM emp_year_salary;
+
+CREATE VIEW new_emp(new_first_name)
+AS
+SELECT first_name 
+FROM my_emp;
+
+SELECT * FROM new_emp;
+SELECT * FROM my_emp;
+
+
+show TABLES;
+
+DESC my_emp;
+
+SHOW CREATE VIEW new_emp;
+
+
+SELECT first_name, phone_number 
+FROM my_emp 
+WHERE employee_id= 104;
+
+UPDATE my_emp 
+SET first_name = 'linsz'
+WHERE employee_id = 104;
+
+-- 修改view 会直接影响到原来表中的数据 
+SELECT * 
+FROM my_emp
+WHERE employee_id = 104;
+
+
+CREATE OR REPLACE VIEW empvu80
+(id_number, name, sal, department_id)
+AS
+SELECT  employee_id, first_name || ' ' || last_name, salary, department_id
+FROM my_emp 
+WHERE department_id = 80;
+
+SELECT * FROM empvu80;
+
+
+-- 存储过程 stored procedure  组经过 预先编译 的 SQL 语句的封装 存储过程是 没有返回值 的
+-- 没有参数(无参数无返回) 2、仅仅带 IN 类型(有参数无返回) 3、仅仅带 OUT 类型(无参数有返 回) 4、既带 IN 又带 OUT(有参数有返回) 5、带 INOUT(有参数有返回)frop
+
+DROP TABLE IF EXISTS t_employee;
+CREATE TABLE t_employee 
+AS
+SELECT * 
+FROM atguigudb.employees;
+
+SELECT * FROM t_employee;
+
+
+DELIMITER $
+
+CREATE PROCEDURE select_all_data()
+BEGIN
+	SELECT * FROM t_employee;
+
+END $
+
+DELIMITER ;
+
+CALL select_all_data();
+
+-- 无参数 
+DELIMITER $
+CREATE PROCEDURE select_min_salary()
+BEGIN
+		SELECT MIN(salary) FROM t_employee;
+
+END $
+
+DELIMITER ;
+
+CALL select_min_salary();
+
+-- 带out 参数 
+DELIMITER $
+CREATE PROCEDURE show_min_salary(OUT ms DOUBLE)
+BEGIN
+		SELECT MIN(salary) INTO ms
+		FROM t_employee;
+
+END $
+
+DELIMITER ;
+
+CALL show_min_salary(@ms);
+SELECT @ms;
+
+
+DESC t_employee;
+-- 带in 参数 
+
+DROP PROCEDURE show_someone_salary;
+DELIMITER $
+CREATE PROCEDURE show_someone_salary(IN empname VARCHAR(25))
+BEGIN
+		SELECT salary 
+		FROM t_employee 
+-- 			注意： 如果有字符集编码的不一致需要修改 否则下句sql的赋值不成功 
+		WHERE last_name = CONVERT(empname USING utf8);
+
+END $
+
+DELIMITER ;
+
+SET @ename := 'Abel';
+CALL show_someone_salary('Abel');
+
+-- IN and OUT
+DROP PROCEDURE IF EXISTS show_someone_salary2;
+DELIMITER $
+CREATE PROCEDURE show_someone_salary2(IN empname VARCHAR(25),OUT empsalary DOUBLE)
+BEGIN
+		SELECT salary INTO empsalary
+		FROM t_employee 
+-- 			注意： 如果有字符集编码的不一致需要修改 否则下句sql的赋值不成功 
+		WHERE last_name = CONVERT(empname USING utf8);
+
+END $
+
+DELIMITER ;
+
+SET @empname = 'Abel';
+CALL show_someone_salary2(@empname,@empsalary);
+SELECT @empsalary;
+
+
+SELECT * FROM t_employee;
+
+
+DROP PROCEDURE IF EXISTS show_mgr_name;
+DELIMITER $
+CREATE PROCEDURE show_mgr_name(INOUT empname VARCHAR(25))
+BEGIN
+		SELECT last_name INTO empname 
+		FROM t_employee 
+		WHERE employee_id = (
+												SELECT manager_id 
+												FROM t_employee 
+												WHERE last_name = CONVERT(empname USING utf8)
+												);
+END $
+DELIMITER ;
+-- 如果你用的是 Navicat 工具，那么在编写存储过程的时候，Navicat 会自动设置 DELIMITER 为其他符号， 我们不需要再进行 DELIMITER 的操作。
+SET @empname = 'Abel';
+CALL show_mgr_name(@empname);
+SELECT @empname;
+
+-- 存储函数 
+CREATE FUNCTION email_by_name()
+RETURNS VARCHAR(25)
+BEGIN
+		RETURN (SELECT email FROM t_employee WHERE last_name = 'Abel');
+
+END
+
+SELECT email_by_name();
+
+CREATE FUNCTION email_by_id(emp_id INT)
+RETURNS VARCHAR(25)
+BEGIN
+		RETURN (SELECT email FROM t_employee WHERE employee_id = emp_id);
+		
+END
+
+SET @emp_id = 105;
+SELECT email_by_id(@emp_id);
+
+CREATE TABLE t_department 
+AS
+SELECT * FROM atguigudb.departments;
+
+SELECT * FROM t_employee;
+
+
+SELECT COUNT(*)
+						FROM t_employee  
+						GROUP BY department_id;
+						
+CREATE FUNCTION number_of_department()
+RETURNS INT
+BEGIN
+		RETURN (
+
+						SELECT COUNT(*)
+												FROM t_employee  
+												GROUP BY department_id
+		);
+END
+
+DROP FUNCTION IF EXISTS number_of_department2;
+CREATE FUNCTION number_of_department2(depart_id INT)
+RETURNS INT
+		COMMENT '查询部门平均工资'
+BEGIN
+		RETURN (
+
+						SELECT COUNT(*)
+												FROM t_employee  
+												WHERE department_id = depart_id 
+		);
+END
+
+SET @depart_id = 50;
+SELECT number_of_department2(@depart_id);
+--  若在创建存储函数中报错“
+-- you might want to use the less safe
+-- log_bin_trust_function_creators variable
+-- ”，有两种处理方法: 方式1:加上必要的函数特性“[NOT] DETERMINISTIC”和“{CONTAINS SQL | NO SQL | READS SQL DATA |
+-- MODIFIES SQL DATA}”
+-- SET GLOBAL log_bin_trust_function_creators = 1;
+
+SHOW CREATE FUNCTION number_of_department2;
+
+-- 存储过程和存储函数的修改删除 查看
+
+SHOW CREATE PROCEDURE select_all_data;
+
+SHOW PROCEDURE STATUS LIKE 'select_all_data';
+
+SELECT * FROM information_schema.Routines
+WHERE ROUTINE_NAME='select_all_data' AND ROUTINE_TYPE = 'PROCEDURE';
+
+
+-- 删除 
+DROP PROCEDURE select_all_data;
+
+
+-- 系统变量 
+-- 变量分类： 1.  系统变量(分为：全局变量 会话变量） 
+--          2.   用户自定义变量 (用户会话变量 局部变量)
+SHOW GLOBAL VARIABLES;
+
+-- character_set_client
+
+SHOW SESSION VARIABLES;
+
+SHOW GLOBAL VARIABLES LIKE 'character_%';
+
+SELECT @@global.character_set_client;
+
+SELECT @@session.character_set_client;
+
+
+SELECT @@character_set_client;
+
+SET @@global.character_set_client = utf8;
+
+
+SET @a = 1;
+SELECT @a;
+
+SELECT @num := COUNT(*) FROM t_employee;
+SELECT @num;
+
+SELECT AVG(salary) INTO @avgsalary FROM t_employee;
+SELECT @avgsalary;
+
+-- 局部变量 declare 语句定义一个局部变量   声明 赋值 查看 
+-- 声明局部变量，并分别赋值为employees表中employee_id为102的last_name和salary
+
+CREATE PROCEDURE set_value()
+BEGIN
+-- 声明 
+		DECLARE value_name VARCHAR(25);
+		DECLARE value_salary DOUBLE(10,2);
+-- 		赋值 
+		SELECT last_name ,salary INTO  value_name,value_salary 
+		FROM t_employee 
+		WHERE employee_id  = 102;
+		
+		SELECT value_name, value_salary;
+		
+		
+END
+
+CALL set_value();
+
+-- 定义条件就是给MySQL中的错误码命名   DECLARE 错误名称 CONDITION FOR 错误码(或错误条件)
+
+DECLARE field_Not_Be_Not CONDITION FOR 1048;
+
+-- 定义处理程序  DECLARE 处理方式 HANDLER FOR 错误类型 处理语句
+DECLARE CONTINUE HANDLER FOR SQLSTATE '42S02' SET @info = 'NO_SUCH_TABLE';
+
+DROP PROCEDURE UpdateDataNoCondition;
+
+CREATE PROCEDURE UpdateDataNoCondition()
+    BEGIN
+-- 				定义处理程序 
+				DECLARE CONTINUE HANDLER FOR 1048 SET @pro_val = -1 ;
+        SET @x = 1;
+        UPDATE t_employee SET email = NULL WHERE last_name = 'Abel';
+        SET @x = 2;
+        UPDATE t_employee SET email = 'aabbel' WHERE last_name = 'Abel';
+        SET @x = 3;
+    END 
+		
+CALL UpdateDataNoCondition();
+
+SELECT @x, @pro_val;
+
+DROP TABLE IF EXISTS t_department;
+CREATE TABLE t_department 
+AS
+SELECT * FROM atguigudb.`departments`;
+
+
+ALTER TABLE t_department 
+ADD CONSTRAINT uk_dept_name UNIQUE(department_name);
+
+
+DROP PROCEDURE IF EXISTS InsertDataWithCondition;
+CREATE PROCEDURE InsertDataWithCondition()
+BEGIN
+--         DECLARE duplicate_entry CONDITION FOR SQLSTATE '23000' ;
+--         DECLARE EXIT HANDLER FOR duplicate_entry SET @proc_value = -1;
+						DECLARE EXIT HANDLER FOR SQLSTATE '23000' SET @pro_val = -1;
+SET @x = 1;
+INSERT INTO t_department(department_name) VALUES('测试'); 
+SET @x = 2;
+INSERT INTO t_department(department_name) VALUES('测试'); 
+SET @x = 3;
+END 
+		
+
+CALL InsertDataWithCondition;
+
+SELECT @x,@pro_val;  # 2  , -1 
+
+-- 流程控制  分支 IF 
+-- 声明存储过程“update_salary_by_eid1”，定义IN参数emp_id，输入员工编号。
+-- 判断该员工 薪资如果低于8000元并且入职时间超过5年，就涨薪500元;否则就不变。
+
+SELECT salary FROM t_employee WHERE employee_id = 103 ;
+SELECT DATEDIFF(CURRENT_DATE,hire_date)/365,hire_date  FROM t_employee WHERE employee_id = 103 ;
+DESC t_employee;
+
+DROP PROCEDURE IF EXISTS update_salary_by_eid1;
+CREATE PROCEDURE update_salary_by_eid1(IN emp_id INT)
+BEGIN
+		DECLARE sal_value DOUBLE;
+		DECLARE hire_year DOUBLE;
+		SELECT salary INTO sal_value FROM t_employee WHERE employee_id = emp_id ;
+		SELECT DATEDIFF(CURRENT_DATE,hire_date)/365  INTO hire_year FROM t_employee WHERE employee_id = emp_id ;
+		
+		IF (sal_value < 8000 AND hire_year >=5 ) 
+						THEN UPDATE t_employee SET salary = salary + 500 WHERE employee_id = emp_id ;
+		END IF;
+END
+
+CALL update_salary_by_eid1(105);
+SELECT salary FROM t_employee WHERE employee_id = 105 ;
+
+-- 声明存储过程“update_salary_by_eid2”，定义IN参数emp_id，输入员工编号。判断该员工 薪资如果低于9000元并且入职时间超过5年，就涨薪500元;否则就涨薪100元。
+CREATE PROCEDURE update_salary_by_eid2(IN emp_id INT)
+BEGIN
+		DECLARE sal_value DOUBLE;
+		DECLARE hire_year DOUBLE;
+		SELECT salary INTO sal_value FROM t_employee WHERE employee_id = emp_id ;
+		SELECT DATEDIFF(CURRENT_DATE,hire_date)/365  INTO hire_year FROM t_employee WHERE employee_id = emp_id ;
+		
+		IF (sal_value < 9000 AND hire_year >=5 ) 
+						THEN UPDATE t_employee SET salary = salary + 500 WHERE employee_id = emp_id ;
+		ELSE
+						UPDATE t_employee SET salary = salary + 100 WHERE employee_id = emp_id ;
+		END IF;
+END
+
+CALL update_salary_by_eid2(103);
+SELECT salary FROM t_employee WHERE employee_id = 103;
+
+
+
+-- 分支结构 case 
+DROP PROCEDURE IF EXISTS test_case_1;
+CREATE PROCEDURE test_case_1(IN val INT)
+BEGIN
+
+		CASE 
+	WHEN val >0 THEN
+	 SELECT 'value is gt 0';
+ WHEN val < 0 THEN
+   SELECT 'value is lt 0';
+	ELSE
+		SELECT 'value is eq 0';
+END CASE;
+
+
+END
+
+CALL test_case_1(10);
+
+-- 声明存储过程“update_salary_by_eid4”，定义IN参数emp_id，
+-- 输入员工编号。判断该员工 薪资如果低于9000元，就更新薪资为9000元;
+-- 薪资大于等于9000元且低于10000的，但是奖金比例 为NULL的，就更新奖金比例为0.01;其他的涨薪100元
+
+DESC t_employee;  commission_pct
+CREATE PROCEDURE update_salary_by_eid4(IN emp_id INT)
+BEGIN
+		DECLARE emp_salary DOUBLE DEFAULT 0.0;
+		DECLARE bonus DOUBLE ;
+		SELECT salary INTO emp_salary FROM t_employee WHERE employee_id = emp_id ;
+		SELECT commission_pct INTO bonus FROM t_employee WHERE employee_id = emp_id;
+		CASE  
+	WHEN emp_salary < 9000 THEN
+		UPDATE t_employee SET salary = 9000 WHERE employee_id = emp_id ;
+	WHEN (emp_salary < 10000 AND bonus IS NULL) THEN 
+	  UPDATE t_employee SET commission_pct = 0.01 WHERE employee_id = emp_id ;
+	ELSE
+		UPDATE t_employee SET salary = salary + 100 WHERE employee_id = emp_id;
+END CASE;
+
+END
+
+CALL update_salary_by_eid4(103);
+
+SELECT * FROM t_employee;
+
+SELECT * FROM t_employee WHERE employee_id = 103;
+
+
+
+--  当市场环境变好时，公司为了奖励大家，决定给大家涨工资。
+-- 声明存储过程 “update_salary_loop()”，声明OUT参数num，输出循环次数。
+-- 存储过程中实现循环给大家涨薪，薪资涨为 原来的1.1倍。直到全公司的平均薪资达到12000结束。并统计循环次数。
+CREATE PROCEDURE update_salary_looop(OUT num INT)
+BEGIN
+		DECLARE avg_sal DOUBLE DEFAULT 0.0;
+		DECLARE count_num INT DEFAULT 0;
+		
+	loop_label : LOOP
+		SELECT AVG(salary) INTO avg_sal FROM t_employee ;
+	IF avg_sal >=12000 THEN
+		LEAVE loop_label;
+	ELSE 
+		UPDATE t_employee SET salary = salary * 1.1 ; 
+		 SET count_num = count_num +1 ;
+	END IF; 
+	
+	SET num = count_num; 
+END LOOP loop_label;
+
+END
+
+CALL update_salary_looop(@num);
+SELECT @num;
+
+SELECT AVG(salary) FROM t_employee;
+
+--  市场环境不好时，公司为了渡过难关，决定暂时降低大家的薪资。
+-- 声明存储过程 “update_salary_while()”，声明OUT参数num，输出循环次数。
+-- 存储过程中实现循环给大家降薪，薪资降 为原来的90%。直到全公司的平均薪资达到5000结束。并统计循环次数。
+
+CREATE PROCEDURE update_salary_while(OUT num INT)
+BEGIN
+    DECLARE avg_sal DOUBLE DEFAULT 0.0;
+		DECLARE while_num INT DEFAULT 0;
+		SELECT AVG(salary) INTO avg_sal FROM t_employee;
+		WHILE avg_sal >5000 DO
+				UPDATE t_employee SET salary = salary * 0.9;
+				SELECT AVG(salary) INTO avg_sal FROM t_employee;
+				SET while_num = while_num + 1 ;		
+END WHILE;
+		SET num = while_num;
+	
+END
+
+CALL update_salary_while(@num);
+SELECT @num;
+
+
+-- 当市场环境变好时，公司为了奖励大家，决定给大家涨工资。
+-- 声明存储过程 “update_salary_repeat()”，声明OUT参数num，输出循环次数。
+-- 存储过程中实现循环给大家涨薪，薪资涨 为原来的1.15倍。直到全公司的平均薪资达到13000结束。并统计循环次数。
+CREATE PROCEDURE update_salary_repeat(OUT num INT)
+BEGIN
+		DECLARE repeat_num INT DEFAULT 0;
+		DECLARE avg_sal DOUBLE DEFAULT 0.0;
+		
+	 REPEAT
+-- 	 如果此时平均工资已经超过 13000 依旧会执行一次程序 导致出错 这点是 repeat 的不足之处  等价于 java中的 do...while();
+	UPDATE t_employee SET salary = salary * 1.15;
+	SELECT AVG(salary) INTO avg_sal FROM t_employee;
+	SET repeat_num = repeat_num + 1;
+UNTIL avg_sal >=13000 END REPEAT;
+SET num = repeat_num;
+
+END
+
+CALL update_salary_repeat(@num);
+SELECT @num;
+
+-- 游标 CURSOR
+-- 创建存储过程“get_count_by_limit_total_salary()”，声明IN参数 limit_total_salary，DOUBLE类型;声明 OUT参数total_count，INT类型。
+-- 函数的功能可以实现累加薪资最高的几个员工的薪资值，直到薪资总和 达到limit_total_salary参数的值，返回累加的人数给total_count。
+
+SELECT employee_id ,salary FROM t_employee ORDER BY salary  DESC;
+
+CREATE PROCEDURE get_count_by_limit_total_salary(IN limit_total_salary DOUBLE, OUT total_count INT)
+BEGIN
+		DECLARE now_sal DOUBLE DEFAULT 0.0;
+		DECLARE cursor_salary DOUBLE DEFAULT 0.0;
+		DECLARE now_count INT DEFAULT 0;
+		DECLARE emp_cursor CURSOR FOR SELECT salary FROM t_employee ORDER BY salary  DESC; # 定义游标 
+		
+		OPEN emp_cursor;  # 打开游标 
+		
+		WHILE limit_total_salary > now_sal  DO
+				FETCH emp_cursor INTO cursor_salary ;  # 使用游标 
+				SET now_sal = now_sal + cursor_salary;
+				SET now_count = now_count +1 ;
+END WHILE;
+				SET total_count = now_count;
+				
+		CLOSE emp_cursor; # 关闭游标 
+	
+END
+
+
+CALL get_count_by_limit_total_salary(100000, @num);
+SELECT @num;
+
+--  触发器 TRIGGER 
+
+CREATE TABLE test_trigger(
+id INT PRIMARY KEY auto_increment,
+t_note VARCHAR(30)
+);
+CREATE TABLE test_trigger_log(
+id INT PRIMARY KEY auto_increment,
+t_log VARCHAR(30)
+);
+
+DROP TRIGGER insert_before;
+CREATE TRIGGER before_insert_on_test_trigger
+BEFORE INSERT ON test_trigger 
+FOR EACH ROW
+BEGIN
+		INSERT INTO test_trigger_log(t_log)
+		VALUES('before insert ');
+END
+
+DROP TRIGGER IF EXISTS after_insert_on_test_trigger;
+CREATE TRIGGER after_insert_on_test_trigger
+AFTER INSERT ON test_trigger 
+FOR EACH ROW
+BEGIN
+		INSERT INTO test_trigger_log(t_log)
+		VALUES('after insert ');
+END
+
+
+SELECT * FROM test_trigger;
+SELECT * FROM test_trigger_log;
+INSERT INTO test_trigger(t_note) VALUES ("hahaha,linsz");
+
+SHOW TRIGGERS;
+
+SHOW CREATE TRIGGER before_insert_on_test_trigger;
+
+SELECT * FROM information_schema.TRIGGERS;
+
+
+
+
+
+
+
+
+
+
+
+
+

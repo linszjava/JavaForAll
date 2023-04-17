@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lin.ssm.dao.EmployeeMapper">
+
+    <resultMap id="EmployEEWithDeptMap" type="Employees">
+        <id column="employee_id" property="employeeId"/>
+        <result column="first_name" property="firstName"/>
+        <result column="last_name" property="lastName"/>
+        <result column="email" property="email"/>
+        <result column="phone_number" property="phoneNumber"/>
+        <result column="hire_date" property="hireDate"/>
+        <result column="job_id" property="jobId"/>
+        <result column="salary" property="salary"/>
+        <result column="commission_pct" property="commissionPct"/>
+        <result column="manager_id" property="managerId"/>
+        <result column="department_id" property="departmentId"/>
+        <association property="departments" javaType="com.lin.ssm.pojo.Departments">
+            <id column="department_id" property="departmentId"/>
+            <result column="department_name" property="departmentName"/>
+            <result column="manager_id" property="managerId"/>
+            <result column="location_id" property="locationId"/>
+        </association>
+    </resultMap>
+
+    <select id="listAllEmployees" resultType="com.lin.ssm.pojo.Employees">
+        select * from employees
+    </select>
+    <select id="listEmployeesWithDepart" resultMap="EmployEEWithDeptMap">
+        SELECT e.* ,d.department_id, department_name
+        FROM employees e LEFT JOIN departments d
+        ON e.department_id = d.department_id;
+    </select>
+</mapper>

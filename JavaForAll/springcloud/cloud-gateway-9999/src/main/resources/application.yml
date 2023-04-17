@@ -1,0 +1,31 @@
+server:
+  port: 9999
+
+spring:
+  application:
+    name: cloud-gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: payment-8001
+#          uri: http://localhost:8001
+          uri: lb://CLOUD-PAYMENT-SERVICE
+          predicates:
+#            - 要求必须是访问** 路径，并且时间是需要在** 之后
+            - Path=/payment/**
+            - After=2022-08-23T15:49:48.290+08:00[Asia/Shanghai]
+          filters:
+#            - 要求必须携带参数才能通过该请求 不携带将直接被过滤
+            - AddRequestParameter=X-Request-Id,1000
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      #      defaultZone: http://localhost:7001/eureka
+      defaultZone: http://eureka-server-7001.com:7001/eureka,http://eureka-server-7002.com:7002/eureka
+
+  instance:
+    instance-id: cloud-gateway-9999
+    prefer-ip-address: true

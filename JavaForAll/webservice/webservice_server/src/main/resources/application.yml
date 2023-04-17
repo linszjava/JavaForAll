@@ -1,0 +1,6 @@
+server:
+  port: 8888
+
+#访问地址：http://localhost:8888/services/ 列出在services下的所有服务列表
+cxf:
+  path: /services

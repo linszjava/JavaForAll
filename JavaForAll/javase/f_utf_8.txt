@@ -1,0 +1,261 @@
+Getting started
+Installation
+To use MyBatis you just need to include the mybatis-x.x.x.jar file in the classpath.
+
+If you are using Maven just add the following dependency to your pom.xml:
+
+<dependency>
+  <groupId>org.mybatis</groupId>
+  <artifactId>mybatis</artifactId>
+  <version>x.x.x</version>
+</dependency>
+Building SqlSessionFactory from XML
+Every MyBatis application centers around an instance of SqlSessionFactory. A SqlSessionFactory instance can be acquired by using the SqlSessionFactoryBuilder. SqlSessionFactoryBuilder can build a SqlSessionFactory instance from an XML configuration file, or from a custom prepared instance of the Configuration class.
+
+Building a SqlSessionFactory instance from an XML file is very simple. It is recommended that you use a classpath resource for this configuration, but you could use any InputStream instance, including one created from a literal file path or a file:// URL. MyBatis includes a utility class, called Resources, that contains a number of methods that make it simpler to load resources from the classpath and other locations.
+
+String resource = "org/mybatis/example/mybatis-config.xml";
+InputStream inputStream = Resources.getResourceAsStream(resource);
+SqlSessionFactory sqlSessionFactory =
+  new SqlSessionFactoryBuilder().build(inputStream);
+The configuration XML file contains settings for the core of the MyBatis system, including a DataSource for acquiring database Connection instances, as well as a TransactionManager for determining how transactions should be scoped and controlled. The full details of the XML configuration file can be found later in this document, but here is a simple example:
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+    <mapper resource="org/mybatis/example/BlogMapper.xml"/>
+  </mappers>
+</configuration>
+While there is a lot more to the XML configuration file, the above example points out the most critical parts. Notice the XML header, required to validate the XML document. The body of the environment element contains the environment configuration for transaction management and connection pooling. The mappers element contains a list of mappers – the XML files and/or annotated Java interface classes that contain the SQL code and mapping definitions.
+
+Building SqlSessionFactory without XML
+If you prefer to directly build the configuration from Java, rather than XML, or create your own configuration builder, MyBatis provides a complete Configuration class that provides all of the same configuration options as the XML file.
+
+DataSource dataSource = BlogDataSourceFactory.getBlogDataSource();
+TransactionFactory transactionFactory =
+  new JdbcTransactionFactory();
+Environment environment =
+  new Environment("development", transactionFactory, dataSource);
+Configuration configuration = new Configuration(environment);
+configuration.addMapper(BlogMapper.class);
+SqlSessionFactory sqlSessionFactory =
+  new SqlSessionFactoryBuilder().build(configuration);
+Notice in this case the configuration is adding a mapper class. Mapper classes are Java classes that contain SQL Mapping Annotations that avoid the need for XML mapping. However, due to some limitations of Java Annotations and the complexity of some MyBatis mappings, XML mapping is still required for the most advanced mappings (e.g. Nested Join Mapping). For this reason, MyBatis will automatically look for and load a peer XML file if it exists (in this case, BlogMapper.xml would be loaded based on the classpath and name of BlogMapper.class). More on this later.
+
+Acquiring a SqlSession from SqlSessionFactory
+Now that you have a SqlSessionFactory, as the name suggests, you can acquire an instance of SqlSession. The SqlSession contains absolutely every method needed to execute SQL commands against the database. You can execute mapped SQL statements directly against the SqlSession instance. For example:
+
+try (SqlSession session = sqlSessionFactory.openSession()) {
+  Blog blog = session.selectOne(
+    "org.mybatis.example.BlogMapper.selectBlog", 101);
+}
+While this approach works, and is familiar to users of previous versions of MyBatis, there is now a cleaner approach. Using an interface (e.g. BlogMapper.class) that properly describes the parameter and return value for a given statement, you can now execute cleaner and more type safe code, without error prone string literals and casting.
+
+For example:
+
+try (SqlSession session = sqlSessionFactory.openSession()) {
+  BlogMapper mapper = session.getMapper(BlogMapper.class);
+  Blog blog = mapper.selectBlog(101);
+}
+Now let's explore what exactly is being executed here.
+
+Exploring Mapped SQL Statements
+At this point you may be wondering what exactly is being executed by the SqlSession or Mapper class. The topic of Mapped SQL Statements is a big one, and that topic will likely dominate the majority of this documentation. But to give you an idea of what exactly is being run, here are a couple of examples.
+
+In either of the examples above, the statements could have been defined by either XML or Annotations. Let's take a look at XML first. The full set of features provided by MyBatis can be realized by using the XML based mapping language that has made MyBatis popular over the years. If you've used MyBatis before, the concept will be familiar to you, but there have been numerous improvements to the XML mapping documents that will become clear later. Here is an example of an XML based mapped statement that would satisfy the above SqlSession calls.
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mybatis.example.BlogMapper">
+  <select id="selectBlog" resultType="Blog">
+    select * from Blog where id = #{id}
+  </select>
+</mapper>
+While this looks like a lot of overhead for this simple example, it is actually very light. You can define as many mapped statements in a single mapper XML file as you like, so you get a lot of mileage out of the XML header and doctype declaration. The rest of the file is pretty self explanatory. It defines a name for the mapped statement “selectBlog”, in the namespace “org.mybatis.example.BlogMapper”, which would allow you to call it by specifying the fully qualified name of “org.mybatis.example.BlogMapper.selectBlog”, as we did above in the following example:
+
+Blog blog = session.selectOne(
+  "org.mybatis.example.BlogMapper.selectBlog", 101);
+Notice how similar this is to calling a method on a fully qualified Java class, and there's a reason for that. This name can be directly mapped to a Mapper class of the same name as the namespace, with a method that matches the name, parameter, and return type as the mapped select statement. This allows you to very simply call the method against the Mapper interface as you saw above, but here it is again in the following example:
+
+BlogMapper mapper = session.getMapper(BlogMapper.class);
+Blog blog = mapper.selectBlog(101);
+The second approach has a lot of advantages. First, it doesn't depend on a string literal, so it's much safer. Second, if your IDE has code completion, you can leverage that when navigating your mapped SQL statements.
+
+NOTE A note about namespaces.
+
+Namespaces were optional in previous versions of MyBatis, which was confusing and unhelpful. Namespaces are now required and have a purpose beyond simply isolating statements with longer, fully-qualified names.
+
+Namespaces enable the interface bindings as you see here, and even if you don’t think you’ll use them today, you should follow these practices laid out here in case you change your mind. Using the namespace once, and putting it in a proper Java package namespace will clean up your code and improve the usability of MyBatis in the long term.
+
+Name Resolution: To reduce the amount of typing, MyBatis uses the following name resolution rules for all named configuration elements, including statements, result maps, caches, etc.
+
+Fully qualified names (e.g. “com.mypackage.MyMapper.selectAllThings”) are looked up directly and used if found.
+Short names (e.g. “selectAllThings”) can be used to reference any unambiguous entry. However if there are two or more (e.g. “com.foo.selectAllThings and com.bar.selectAllThings”), then you will receive an error reporting that the short name is ambiguous and therefore must be fully qualified.
+There's one more trick to Mapper classes like BlogMapper. Their mapped statements don't need to be mapped with XML at all. Instead they can use Java Annotations. For example, the XML above could be eliminated and replaced with:
+
+package org.mybatis.example;
+public interface BlogMapper {
+  @Select("SELECT * FROM blog WHERE id = #{id}")
+  Blog selectBlog(int id);
+}
+The annotations are a lot cleaner for simple statements, however, Java Annotations are both limited and messier for more complicated statements. Therefore, if you have to do anything complicated, you're better off with XML mapped statements.
+
+It will be up to you and your project team to determine which is right for you, and how important it is to you that your mapped statements be defined in a consistent way. That said, you're never locked into a single approach. You can very easily migrate Annotation based Mapped Statements to XML and vice versa.
+
+
+入门
+安装
+要使用 MyBatis，您只需在类路径中包含 mybatis-xxxjar 文件。
+
+如果您使用的是 Maven，只需将以下依赖项添加到您的 pom.xml 中：
+
+<dependency> <groupId> org.mybatis </groupId> <artifactId> mybatis </artifactId> <version> xxx </version> </dependency>
+
+
+
+从 XML 构建 SqlSessionFactory
+每个 MyBatis 应用程序都以 SqlSessionFactory 实例为中心。可以使用 SqlSessionFactoryBuilder 获取 SqlSessionFactory 实例。SqlSessionFactoryBuilder 可以从 XML 配置文件或从 Configuration 类的自定义准备实例构建 SqlSessionFactory 实例。
+
+从 XML 文件构建 SqlSessionFactory 实例非常简单。建议您为此配置使用类路径资源，但您可以使用任何 InputStream 实例，包括从文字文件路径或 file:// URL 创建的实例。MyBatis 包含一个名为 Resources 的实用程序类，它包含许多方法，可以更简单地从类路径和其他位置加载资源。
+
+字符串资源= "org/mybatis/example/mybatis-config.xml" ; 输入流输入流=资源。getResourceAsStream (资源); SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder ()。构建（输入流）；
+
+
+
+配置 XML 文件包含 MyBatis 系统核心的设置，包括用于获取数据库连接实例的 DataSource，以及用于确定应如何确定事务的范围和控制的 TransactionManager。XML 配置文件的完整详细信息可以在本文档后面找到，但这里是一个简单的示例：
+
+<? xml 版本= "1.0"编码= "UTF-8" ?> <!DOCTYPE 配置
+
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd"> <configuration> <environments default = "development" > <environment id = "development" > <transactionManager type = "JDBC" /> <dataSource类型= “POOLED” > <属性名称= “驱动程序”值= “${驱动程序}” /> <属性名称= “url”值= “${url}” /> <属性名称= “用户名”值
+
+
+
+
+
+
+
+          = "${username}" /> <property name = "password" value = "${password}" /> </dataSource> </environment> </environments> <mappers> <mapper resource = "org/mybatis/示例/BlogMapper.xml" /> </mappers> </configuration>
+
+
+
+
+
+
+
+虽然 XML 配置文件还有很多内容，但上面的示例指出了最关键的部分。请注意验证 XML 文档所需的 XML 标头。environment 元素的主体包含用于事务管理和连接池的环境配置。mappers 元素包含一个映射器列表——XML 文件和/或包含 SQL 代码和映射定义的带注释的 Java 接口类。
+
+在没有 XML 的情况下构建 SqlSessionFactory
+如果您更喜欢直接从 Java 而不是 XML 构建配置，或者创建自己的配置构建器，MyBatis 提供了一个完整的 Configuration 类，它提供所有与 XML 文件相同的配置选项。
+
+数据源数据源= BlogDataSourceFactory 。获取博客数据源（）；TransactionFactory transactionFactory = new JdbcTransactionFactory (); Environment environment = new Environment ( "development" , transactionFactory , dataSource ); 配置配置=新配置（环境）；
+配置。addMapper ( BlogMapper .类);
+
+
+
+
+
+SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder ()。构建（配置）；
+
+请注意，在这种情况下，配置正在添加一个映射器类。Mapper 类是包含 SQL 映射注释的 Java 类，可避免 XML 映射的需要。然而，由于 Java Annotations 的一些限制和一些 MyBatis 映射的复杂性，XML 映射仍然是最高级的映射（例如 Nested Join Mapping）所必需的。因此，MyBatis 会自动查找并加载一个对等 XML 文件（如果存在）（在这种情况下，BlogMapper.xml 将根据类路径和 BlogMapper.class 的名称来加载）。稍后再谈。
+
+从 SqlSessionFactory 获取 SqlSession
+现在你有了一个SqlSessionFactory，顾名思义，你可以获取一个SqlSession 的实例。SqlSession 绝对包含对数据库执行 SQL 命令所需的所有方法。您可以直接针对 SqlSession 实例执行映射的 SQL 语句。例如：
+
+尝试（SqlSession session = sqlSessionFactory . openSession ()) { Blog blog = session 。selectOne ( "org.mybatis.example.BlogMapper.selectBlog" , 101 ); }
+
+
+虽然这种方法有效，并且对以前版本的 MyBatis 的用户来说很熟悉，但现在有一种更简洁的方法。使用正确描述给定语句的参数和返回值的接口（例如 BlogMapper.class），您现在可以执行更清晰、类型更安全的代码，而无需容易出错的字符串文字和强制转换。
+
+例如：
+
+尝试（SqlSession session = sqlSessionFactory . openSession ()) { BlogMapper mapper = session 。getMapper ( BlogMapper.class ) ; _ 博客博客=映射器。选择博客（101 ）；}
+
+
+现在让我们来探索一下这里到底在执行什么。
+
+探索映射的 SQL 语句
+此时您可能想知道 SqlSession 或 Mapper 类究竟在执行什么。映射 SQL 语句的主题是一个很大的主题，该主题可能会主导本文档的大部分内容。但是为了让您了解正在运行的具体内容，这里有几个示例。
+
+在上面的任何一个示例中，语句都可以由 XML 或 Annotations 定义。我们先来看看 XML。MyBatis 提供的全套功能可以通过使用多年来使 MyBatis 流行的基于 XML 的映射语言来实现。如果您以前使用过 MyBatis，那么您会对这个概念很熟悉，但是 XML 映射文档已经有了许多改进，稍后会变得清晰。下面是满足上述 SqlSession 调用的基于 XML 的映射语句的示例。
+
+<? xml 版本= "1.0"编码= "UTF-8" ?> <!DOCTYPE 映射器
+
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> <mapper namespace = "org.mybatis.example.BlogMapper" > <select id = "selectBlog" resultType = "Blog" >
+
+
+    从博客中选择 * id = #{id}
+  </select> </mapper>
+虽然对于这个简单的示例来说这看起来开销很大，但实际上非常轻。您可以在单个映射器 XML 文件中定义任意数量的映射语句，这样您就可以从 XML 标头和 doctype 声明中获得很多好处。该文件的其余部分非常不言自明。它在命名空间“org.mybatis.example.BlogMapper”中为映射语句“selectBlog”定义了一个名称，这将允许您通过指定“org.mybatis.example.BlogMapper.selectBlog”的完全限定名称来调用它，正如我们在以下示例中所做的那样：
+
+博客博客=会话。selectOne ( "org.mybatis.example.BlogMapper.selectBlog" , 101 );
+
+请注意，这与在完全限定的 Java 类上调用方法有多么相似，这是有原因的。该名称可以直接映射到与命名空间同名的 Mapper 类中，使用匹配名称、参数和返回类型的方法作为映射的 select 语句。这使您可以非常简单地针对 Mapper 接口调用该方法，如上所示，但在以下示例中再次出现：
+
+BlogMapper映射器=会话。getMapper ( BlogMapper.class ) ; _ 博客博客=映射器。选择博客（101 ）；
+第二种方法有很多优点。首先，它不依赖于字符串文字，因此更安全。其次，如果您的 IDE 具有代码完成功能，您可以在导航映射的 SQL 语句时利用它。
+
+笔记 关于命名空间的说明。
+
+在以前的 MyBatis 版本中，命名空间是可选的，这令人困惑且无益。命名空间现在是必需的，其目的不仅仅是用更长的、完全限定的名称来隔离语句。
+
+正如您在此处看到的那样，命名空间启用接口绑定，即使您认为今天不会使用它们，您也应该遵循此处列出的这些做法，以防您改变主意。使用命名空间一次，并将其放入适当的 Java 包命名空间将清理您的代码并从长远来看提高 MyBatis 的可用性。
+
+名称解析：为了减少键入量，MyBatis 对所有命名的配置元素使用以下名称解析规则，包括语句、结果映射、缓存等。
+
+完全限定的名称（例如“com.mypackage.MyMapper.selectAllThings”）被直接查找并在找到时使用。
+短名称（例如“selectAllThings”）可用于引用任何明确的条目。但是，如果有两个或更多（例如“com.foo.selectAllThings 和 com.bar.selectAllThings”），那么您将收到一个错误报告，指出短名称不明确，因此必须完全限定。
+像 BlogMapper 这样的 Mapper 类还有一个技巧。他们的映射语句根本不需要用 XML 映射。相反，他们可以使用 Java 注释。例如，上面的 XML 可以被删除并替换为：
+
+包组织。米巴蒂斯_ 例子；公共接口BlogMapper { @Select ( "SELECT * FROM blog WHERE id = #{id}" )博客selectBlog ( int id ); }
+
+
+
+注释对于简单的语句要干净得多，但是，Java 注释对于更复杂的语句来说既有限又混乱。因此，如果您必须做任何复杂的事情，最好使用 XML 映射语句。
+
+由您和您的项目团队决定哪个适合您，以及以一致的方式定义映射语句对您有多重要。也就是说，您永远不会被锁定在单一方法中。您可以非常轻松地将基于注释的映射语句迁移到 XML，反之亦然。
+
+范围和生命周期
+了解到目前为止我们讨论过的各种范围和生命周期类非常重要。错误地使用它们会导致严重的并发问题。
+
+笔记 对象生命周期和依赖注入框架
+
+依赖注入框架可以创建线程安全的事务性 SqlSession 和映射器，并将它们直接注入到您的 bean 中，这样您就可以忘记它们的生命周期。您可能想看看 MyBatis-Spring 或 MyBatis-Guice 子项目，以了解更多关于将 MyBatis 与 DI 框架一起使用的信息。
+
+SqlSessionFactoryBuilder
+这个类可以被实例化、使用和丢弃。创建 SqlSessionFactory 后，无需保留它。因此，SqlSessionFactoryBuilder 实例的最佳范围是方法范围（即本地方法变量）。您可以重用 SqlSessionFactoryBuilder 来构建多个 SqlSessionFactory 实例，但最好不要保留它，以确保所有 XML 解析资源都被释放用于更重要的事情。
+
+SqlSessionFactory
+创建后，SqlSessionFactory 应该在应用程序执行期间存在。应该很少或根本没有理由处置或重新创建它。最好不要在应用程序运行中多次重建 SqlSessionFactory。这样做应该被认为是“难闻的气味”。因此 SqlSessionFactory 的最佳范围是应用范围。这可以通过多种方式实现。最简单的是使用单例模式或静态单例模式。
+
+SqlSession
+每个线程都应该有自己的 SqlSession 实例。SqlSession 的实例不能共享，也不是线程安全的。因此，最好的范围是请求或方法范围。永远不要在静态字段甚至类的实例字段中保留对 SqlSession 实例的引用。永远不要在任何类型的托管范围内保留对 SqlSession 的引用，例如 Servlet 框架的 HttpSession。如果您使用任何类型的 Web 框架，请考虑 SqlSession 遵循与 HTTP 请求类似的范围。换句话说，在收到 HTTP 请求后，您可以打开一个 SqlSession，然后在返回响应后，您可以将其关闭。关闭会话非常重要。你应该始终确保它' s 在 finally 块内关闭。以下是确保 SqlSession 关闭的标准模式：
+
+try ( SqlSession session = sqlSessionFactory . openSession ()) { // 做工作}
+
+在您的代码中始终如一地使用此模式将确保正确关闭所有数据库资源。
+
+映射器实例
+映射器是您为绑定到映射语句而创建的接口。映射器接口的实例是从 SqlSession 中获取的。因此，从技术上讲，任何映射器实例的最广泛范围与请求它们的 SqlSession 相同。然而，映射器实例的最佳范围是方法范围。也就是说，它们应该在使用它们的方法中被请求，然后被丢弃。它们不需要显式关闭。虽然在整个请求期间保留它们不是问题，类似于 SqlSession，但您可能会发现在此级别管理太多资源会很快失控。保持简单，将 Mappers 保持在方法范围内。
+
+尝试（SqlSession session = sqlSessionFactory . openSession ()) { BlogMapper mapper = session 。getMapper ( BlogMapper.class ) ; _ // 做工作}
+
+
+© 2009–2022 MyBatis.org

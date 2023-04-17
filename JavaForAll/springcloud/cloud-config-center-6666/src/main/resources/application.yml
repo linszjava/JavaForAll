@@ -1,0 +1,41 @@
+server:
+  port: 6666
+
+spring:
+  application:
+    name: cloud-config-center-service
+  cloud:
+    config:
+      server:
+        git:
+#          uri: git@gitlab.com:linshaozheng/springcloud-config.git
+          search-paths: springcloud-config
+          uri: https://gitlab.com/linshaozheng/springcloud-config.git
+          username: linshaozheng
+          password: 18760629245lsz
+      #          哪一个分支上的
+      label: main
+  rabbitmq:
+    port: 5672
+    username: guest
+    password: guest
+    host: localhost
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      #      defaultZone: http://localhost:7001/eureka
+      defaultZone: http://eureka-server-7001.com:7001/eureka,http://eureka-server-7002.com:7002/eureka
+
+  instance:
+    instance-id: cloud-config-center-6666
+    prefer-ip-address: true
+
+# config server exposes endpoint
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "bus-refresh"

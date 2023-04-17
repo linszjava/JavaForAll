@@ -1,0 +1,15 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: cloud-nacos-consumer-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 5000
+
